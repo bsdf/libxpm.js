@@ -55,6 +55,23 @@ var _canv = (function() {
             }
         };
 
+
+    var comment_regex = /\s*\/\*.*\*\/\s*/gi;
+    var parse_xpm =
+        function(what) {
+            // grab the { ... }
+            var body = what.substring(xpmstr.indexOf('{')+1,
+                                      xpmstr.lastIndexOf('}'));
+
+            var lines = [], line;
+            var sp = body.split(',');
+            for (var k in body.split(',')) {
+                line = body[k];
+            }
+
+
+        };
+
     window.onload = init;
     return ext;
 })();
