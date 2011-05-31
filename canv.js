@@ -56,17 +56,17 @@ var _canv = (function() {
         };
 
 
-    var comment_regex = /\s*\/\*.*\*\/\s*/g;
+
     var parse_xpm = ext.parse =
         function(what) {
             // grab the { ... }
-            var body = what.substring(xpmstr.indexOf('{')+1,
-                                      xpmstr.lastIndexOf('}'));
+            var body = what.substring(what.indexOf('{')+1,
+                                      what.lastIndexOf('}'));
 
             var lines = [], line;
             var sp = body.split(',');
-            for (var k in body.split(',')) {
-                line = body[k];
+            for (var k in sp) {
+                line = sp[k];
                 // remove comments
                 line = line.replace(comment_regex, "");
                 console.log(line);
@@ -227,3 +227,5 @@ static char * snoopy_xpm[] = {\
 ".OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO.",\
 "................................",\
 ".OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO."};';
+
+var comment_regex = /\s*\/\*.*\*\/\s*/g;
