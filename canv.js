@@ -59,6 +59,7 @@ var _canv = (function() {
 
     var parse_xpm = ext.parse =
         function(what) {
+            var xpm_info = {};
             // grab the { ... }
             var body = what.substring(what.indexOf('{')+1,
                                       what.lastIndexOf('}'));
@@ -69,11 +70,20 @@ var _canv = (function() {
                 line = sp[k];
                 // remove comments
                 line = line.replace(comment_regex, "");
-                console.log(line);
+
                 if (line.trim() != "") {
                     lines.push(line);
                 }
             }
+
+            var info_line = lines[0];
+            var info_parts = info_line.split(/\s+/);
+            xpm_info.width = info_parts[0];
+            xpm_info.height = info_parts[1];
+            xpm_info.colors = info_parts[2];
+            xpm_info.cpp = info_parts[3];
+            
+            console.log(xpm_info);
 
 
         };
