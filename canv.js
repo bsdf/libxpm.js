@@ -56,8 +56,8 @@ var _canv = (function() {
         };
 
 
-    var comment_regex = /\s*\/\*.*\*\/\s*/gi;
-    var parse_xpm =
+    var comment_regex = /\s*\/\*.*\*\/\s*/g;
+    var parse_xpm = ext.parse =
         function(what) {
             // grab the { ... }
             var body = what.substring(xpmstr.indexOf('{')+1,
@@ -67,6 +67,12 @@ var _canv = (function() {
             var sp = body.split(',');
             for (var k in body.split(',')) {
                 line = body[k];
+                // remove comments
+                line = line.replace(comment_regex, "");
+                console.log(line);
+                if (line.trim() != "") {
+                    lines.push(line);
+                }
             }
 
 
