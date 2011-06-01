@@ -8,19 +8,47 @@ var _canv = (function() {
             require("color_parse.js");
             canvas = document.getElementById("canv");
             ctx = canvas.getContext("2d");
+
+            var select = document.getElementById("which_xpm");
+            var xpms = ["snoopy", "netscape", "xemacs"];
+            for (var key in xpms) {
+                select.options.add(new Option(xpms[key]));
+            }
         };
 
     var click = ext.click =
         function(e) {
-            var colormap = create_colormap(xpm);
-            var pixels = xpm.pixels, line, char;
-            for (var i=0; i<pixels.length; i++) {
+            var xpm_data;
+            var select = document.getElementById("which_xpm");
+            if (select.value == "netscape")
+                xpm_data = netscape;
+            else if (select.value == "xemacs")
+                xpm_data = xemacs;
+            else if (select.value == "snoopy")
+                xpm_data = snoopy;
+            else
+                xpm_data = netscape;
+            
+            var width = xpm_data.dimensions[0];
+            var height = xpm_data.dimensions[1];
+            
+            // resize canvas;
+            canvas.width = (width*scale);
+            canvas.height = (height*scale);
+            canvas.style.width = (width*scale) + "px";
+            canvas.style.height = (height*scale) + "px";
+
+            var colormap = create_colormap(xpm_data);
+            var pixels = xpm_data.pixels, line, char;
+            for (var i=0; i<height; i++) {
                 line = pixels[i];
                 for (var j=0; j<line.length; j++) {
                     char = line[j];
                     color_pixel(j, i, colormap[char]);
                 }
             }
+
+            document.getElementById("pre").innerHTML = xpm_data.pixels.join('\n');
         };
 
     var create_colormap =
@@ -32,7 +60,7 @@ var _canv = (function() {
                 char = current[0];
                 sp = current.split(/\s/);
                 color = sp[sp.length-1];
-                out[char] = color;
+                out[char] = x11_colors.get_color_value(color);
             }
 
             return out;
@@ -89,6 +117,11 @@ var _canv = (function() {
 
         };
 
+    var export_canvas = ext.export_canvas =
+        function() {
+            
+        };
+
     window.onload = init;
     return ext;
 })();
@@ -105,8 +138,9 @@ var require =
         head.appendChild(script);
     };
 
-var xpm = {
-    dimensions: "32 30 5 1",
+var $ = function(what) { return document.getElementById(what); };
+var netscape = {
+    dimensions: [32, 30, 5, 1],
     colors: [" 	c None", //" 	s None	c None",
              ".	c grey",
              "X	c white",
@@ -144,6 +178,116 @@ var xpm = {
         "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO",
         "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO"]
 };
+
+var xemacs = {
+    dimensions: [48, 48, 10, 1],
+
+    colors: [" 	c #FFFFFFFFFFFF",
+             ".	c #618565956185",
+             "X	c #E79DE38DE79D",
+             "o	c #CF3CCB2BCF3C",
+             "O	c #79E77DF779E7",
+             "+	c #965896589658",
+             "@	c #492449244924",
+             "#	c #FFFF00000000",
+             "$	c #AEBAAEBAAEBA",
+             "%	c #FFFFFFFF0000"],
+
+    pixels: [
+        "                                                ",
+        "                                            .   ",
+        "           XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXo.   ",
+        "           XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXo.O++",
+        "           XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXo.O++",
+        "           XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXo.O++",
+        "           XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXo.O++",
+        "           XXXXXXooo..O..OooOOooXXXXXXXXXXXo.O++",
+        "           XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXo.O++",
+        "       @        @X           @XXXXXXXXXXXXXo.O++",
+        "  #####@   #####@X ##########@..OooXXXXXXXXo.O++",
+        "   ####@   ####@XX ##########@XXXXXXXXXXXXXo.O++",
+        "   #####@ #####@$$ ##########@$$$XXXXXXXXXXo.O++",
+        "    ####@ ####@$$$ #####@@@@@@$$$OO.OOoXXXXo.O++",
+        "    ##########@$$% #####@%%%%$%%%%%%%%%%%XXo.O++",
+        "     ########@$$$% #####@     %%%%%%%%%%%XXo.O++",
+        "     ########@$$$% ##########@$$$oo%%%%%%XXo.O++",
+        "      ######@$$$$% ##########@%%%%%%%%%%%XXo.O++",
+        "     ########@$$$% ##########@%%%%%%%%%%%XXo.O++",
+        "     ########@$$XX #####@@@@@@$$.OOOooXXXXXo.O++",
+        "    ##########@$$X #####@$$$$$$$$XXXXXXXXXXo.O++",
+        "    ####@@####@$$X #####@     $$$XXXXXXXXXXo.O++",
+        "   #####@ #####@$$ ##########@$$$oooXXXXXXXo.O++",
+        "   ####@$$ ####@$$ ##########@XXXXXXXXXXXXXo.O++",
+        "  #####@$$ #####@$ ##########@...OOOOO.XXXXo.O++",
+        " @@@@@@@$$@@@@@@@$@@@@@@@@@@@@$$$XXXXXXXXXXo.O++",
+        "     $$$$$$XXX$$$$$$XX$$....$$...OOOOO.XXXXo.O++",
+        "     $$$$$$XXX$$$$$$XX$$$$$$$$$$$XXXXXXXXXXo.O++",
+        "           XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXo.O++",
+        "           XXXXXXXXXXXX..oOOO.ooOooXXXXXXXXo.O++",
+        "           XXXX+#+XXXXXXXXXXXXXXXXXXXXXXXXXo.O++",
+        "           XXX+###+XXXXXXXXXXXXXXXXXXXXXXXXo.O++",
+        "           XXX#####oOOOoo.OOOoXXXXXXXXXXXXXo.O++",
+        "           XXX+###+XXXXXXXXXXXXXXXXXXXXXXXXo.O++",
+        "           XXXX+#+XXXXXXXXXXXXXXXXXXXXXXXXXo.O++",
+        "           XXXXXXXXXXXXXXoOO.o$$OOOoXXXXXXXo.O++",
+        "           XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXo.O++",
+        "           XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXo.O++",
+        "           XXXXXXXXXXXXXXXXXXXXX.OOOoooXXXXo.O++",
+        "           XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXo.O++",
+        "           XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXo.O++",
+        "           XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXo.O++",
+        "           XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXo.O++",
+        "           ooooooooooooooooooooooooooooooooo.O++",
+        "          ...................................O++",
+        "            OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO++",
+        "            ++++++++++++++++++++++++++++++++++++",
+        "            ++++++++++++++++++++++++++++++++++++"]
+};
+
+var snoopy = {
+    dimensions: [32, 32, 5, 1],
+
+    colors: [" 	s None	c None",
+             ".	c black",
+             "X	c yellow",
+             "o	c white",
+             "O	c firebrick"],
+
+    pixels: [
+        "                         .XXXXXX",
+        "                     .....XXXXXX",
+        "                         ..XXXXX",
+        "                          .XXXXX",
+        "                         ...XXXX",
+        "                        .  ..XXX",
+        "        ..             .   . ...",
+        "       ....                .  . ",
+        "      .oooo.              .   . ",
+        "     .oooooo.                 . ",
+        "     .oooooo.                 . ",
+        "     .oooooo.    ...     ..     ",
+        "      .oooo.    .ooo.   .oo.    ",
+        "   .  .oooo.   .ooooo.  .o..    ",
+        "    ..oooo.   .oooooo.  .oo.    ",
+        "    .o.ooo.. .ooooooo.  .oo.    ",
+        "    .ooooo...oooooooo....oo.    ",
+        "    .oooooo.o.....ooooooooo.    ",
+        "     ...ooo.oooooo.oooooooo.    ",
+        "   .............oo...........   ",
+        "   .O...OOOOOOOO..OOOOOOOOOO.   ",
+        "   .O....OOOOOOOOOOOOOOOOOOO.   ",
+        "   .O....OOOOOOOOOOOOOOOOOOO.   ",
+        "  .OO....OOOOOOOOOOOOOOOOOOOO.  ",
+        "  ............................  ",
+        "  .OO....OOOOOOOOOOOOOOOOOOOO.  ",
+        " .OOO....OOOOOOOOOOOOOOOOOOOOO. ",
+        " .OOOO..OOOOOOOOOOOOOOOOOOOOOO. ",
+        " .OOOOOOOOOOOOOOOOOOOOOOOOOOOO. ",
+        ".OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO.",
+        "................................",
+        ".OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO."]
+};
+
 
 var xpmstr = '/* XPM */\
 static char * xemacs-icon_xpm[] = {\
