@@ -5,6 +5,7 @@ var _canv = (function() {
 
     var init =
         function() {
+            require("color_parse.js");
             canvas = document.getElementById("canv");
             ctx = canvas.getContext("2d");
         };
@@ -91,6 +92,18 @@ var _canv = (function() {
     window.onload = init;
     return ext;
 })();
+
+var require =
+    function(what, cached) {
+        var url = what + (!cached? "?nocache=" + Date.now() : "");
+
+        var head = document.getElementsByTagName('head')[0];
+        var script = document.createElement('script');
+        script.type= 'text/javascript';
+        script.src = url;
+        
+        head.appendChild(script);
+    };
 
 var xpm = {
     dimensions: "32 30 5 1",
