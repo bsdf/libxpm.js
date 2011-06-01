@@ -1,12 +1,16 @@
-
-var rgb48 = /#([0-9A-Fa-f]{4})([0-9A-Fa-f]{4})([0-9A-Fa-f]{4})/;
+var rgbcss = /rgba?\(\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}(?:\s*,\s*\d{1,3})?\)/;
+var rgbhex = /^#(?:[0-9A-Fa-f]{1,2}){3}$/;
+var rgb48hex = /^#([0-9A-Fa-f]{4})([0-9A-Fa-f]{4})([0-9A-Fa-f]{4})$/;
 
 var parse_color_value =
     function(what) {
         var color, matches;
 
+        if (rgbcss.test(what) || rgbhex.test(what))
+            return what;
+
         // 48bit rgb...
-        if (matches = rgb48.exec(what))
+        if (matches = rgb48hex.exec(what))
             return 'rgb(' + [parseInt(matches[1].substring(0,2), 16), 
                              parseInt(matches[2].substring(0,2), 16), 
                              parseInt(matches[3].substring(0,2), 16)].join(",") + ")";
