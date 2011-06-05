@@ -1,7 +1,13 @@
 render xpm images to the web
 
-useage:
-document.body.appendChild(libxpm.xpm_to_img(xpm_str))
+USEAGE:
 
-todo:
-* lots of rendering bugz
+    var render_options = {
+        scale: 10,
+        bg_checkered: true // make the transparent bg checkered
+    };
+
+    document.body.appendChild(libxpm.xpm_to_img(xpm_str, render_options));
+
+TODO:
+* rendering bugsz
