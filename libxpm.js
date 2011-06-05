@@ -22,34 +22,6 @@ var libxpm = (function() {
             }
         };
 
-    var xpminfo;
-    var ctx;
-    var timer;
-    var i=j=0;
-    var timeout_callback =
-        function() {
-            if (i++ == xpminfo.width) {
-                ++j;
-                i=0;
-
-                return;
-            }
-
-            if (j == xpminfo.height) {
-                clearInterval(timer);
-                return;
-            }
-
-            var char = xpminfo.pixels[j][i];
-            color_pixel(ctx, i, j, xpminfo.color_map[char]);
-
-        };
-
-    var parse_options =
-        function(what) {
-            
-        };
-
     return {
         parse_xpm: function(what) {
             var xpm_info = {};
@@ -93,13 +65,6 @@ var libxpm = (function() {
             xpm_info.pixels = lines.slice(i);
 
             return xpm_info;
-        },
-
-        slow_render: function (xpm_info, c) {
-            xpminfo = xpm_info;
-            ctx = c;
-
-            timer = window.setInterval(timeout_callback, 10, true);
         },
 
         render_to_canvas: function(xpm_info, c, options) {
