@@ -1,0 +1,4 @@
+render xpm images to the web
+
+useage:
+document.body.appendChild(libxpm.xpm_to_img(xpm_str))
