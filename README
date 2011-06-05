@@ -3,7 +3,6 @@ render xpm images to the web
 USEAGE:
 
     var url = "./xpm/xemacs.xpm";
-
     var xhr = new XMLHttpRequest();
     xhr.open("GET", url, true);
 
