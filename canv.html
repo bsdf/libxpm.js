@@ -6,19 +6,32 @@
     <style type="text/css" media="screen">
       body {
           background-color: #3f3f3f;
+          color: #dcdccc;
       }
 
-      #canv {
-          height: 192px;
-          width: 192px;
+      #code {
+          float: right;
+          margin-right:10px;
+      }
+
+      #code pre {
+          font-family: "Consolas", "Inconsolata", monospace;
+          font-size: 10px;
+          line-height: 10px;
       }
     </style>
 
   </head>
   <body>
-    <div id="wrapper">
-      <canvas id="canv" height="192" width="192"></canvas>
+    <div id="controls">
+      <select id="which_xpm"></select>
+      <input id="bt" value="click" type="button" onclick="_canv.click()"/>
     </div>
-    <input id="bt" value="click" type="button" onclick="_canv.click()"/>
+    <div id="wrapper">
+      <canvas id="canv"></canvas>
+      <div id="code">
+        <pre id="pre"></pre>
+      </div>
+    </div>
   </body>
 </html>
