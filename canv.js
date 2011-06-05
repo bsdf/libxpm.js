@@ -6,28 +6,25 @@ var _canv = (function() {
     var init =
         function() {
             require("libxpm.js");
-            require("xpm_data.js");
-
             canvas = document.getElementById("canv");
         };
 
+    var xhr;
     var click = ext.click =
         function(e) {
-            var xpm_info = libxpm.parse_xpm(xpmstr);
-            libxpm.render_to_canvas(xpm_info, canvas);
-            
-            document.getElementById("pre").innerHTML = xpm_info.pixels.join('\n');
-        };
+            var url = "xpm/owl.xpm";
 
-    var export_canvas = ext.export_canvas =
-        function() {
-            
-        };
+            xhr = new XMLHttpRequest();
+            xhr.open("GET", url, true);
+            xhr.onreadystatechange =
+                function(e) {
+                    if (xhr.readyState == 4) {
+                        var xpmstr = xhr.responseText;
+                        $("wrapper").appendChild(libxpm.xpm_to_img(xpmstr, {scale:10}));
+                    }
+                };
 
-    var test_render = ext.test =
-        function() {
-            var xpm_info = libxpm.parse_xpm(xpmstr);
-            libxpm.render_to_canvas(xpm_info, ctx);
+            xhr.send();
         };
 
     window.onload = init;
