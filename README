@@ -2,12 +2,23 @@ render xpm images to the web
 
 USEAGE:
 
-    var render_options = {
-        scale: 10,
-        bg_checkered: true // make the transparent bg checkered
+    var url = "./xpm/xemacs.xpm";
+
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", url, true);
+
+    xhr.onreadystatechange = function(e) {
+        if (xhr.readyState == 4) {
+            var render_options = {
+                scale: 10,
+                bg_checkered: true // make the transparent bg checkered
+            };
+
+            document.body.appendChild(libxpm.xpm_to_img(xpm_str, render_options));
+        }
     };
 
-    document.body.appendChild(libxpm.xpm_to_img(xpm_str, render_options));
+    xhr.send();
 
 TODO:
 * rendering bugsz
