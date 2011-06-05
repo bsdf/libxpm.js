@@ -30,7 +30,9 @@ var _canv = (function() {
                             bg_checkered: false
                         };
 
-                        $("wrapper").appendChild(libxpm.xpm_to_img(xpmstr, render_options));
+                        var wrapper = $("wrapper");
+                        wrapper.appendChild(libxpm.xpm_to_img(xpmstr, render_options));
+                        wrapper.scrollTop = wrapper.scrollHeight;
                     }
                 };
 
