@@ -2,7 +2,8 @@ var libxpm = (function() {
     var comment_regex = /\s*\/\*.*\*\/\s*/g;
     
     var render_options = {
-        scale: 5
+        scale: 5,
+        bg_checkered: true
     };
 
     var color_pixel =
@@ -13,10 +14,12 @@ var libxpm = (function() {
 
             if (color) {
                 if (color.match(/none/i)) {
-                    var step = render_options.scale/2;
-                    c.fillStyle = "#333";
-                    c.fillRect(xx, yy, step, step);                
-                    c.fillRect(xx+step, yy+step, step, step);
+                    if (render_options.bg_checkered) {
+                        var step = render_options.scale/2;
+                        c.fillStyle = "#333";
+                        c.fillRect(xx, yy, step, step);                
+                        c.fillRect(xx+step, yy+step, step, step);
+                    }
                 } else {
                     c.fillStyle = color;
                     c.fillRect(xx, yy, render_options.scale, render_options.scale);
@@ -26,8 +29,44 @@ var libxpm = (function() {
             }
         };
 
-    var parse_xpm =
+    var parse_color_string =
         function(what) {
+            parts = what.split('\t');
+            
+            if (parts.length > 1) {
+                color_split = parts[parts.length-1].split(/\s+/);
+                
+                char = color_split[0];
+                color = x11_colors.get_color_value(color_split[color_split.length-1].toLowerCase());
+            } else {
+                parts = parts[0].split(/\s+/);
+                char = parts[0];
+                color = x11_colors.get_color_value(parts[parts.length-1].toLowerCase());
+            }
+
+            return color;
+        };
+
+    return {
+        xpm_to_img: function(what, options) {
+            if (options)
+                render_options = options;
+
+            var xpm_info = this.parse_xpm(what);
+            // console.log(xpm_info);
+
+            var canvas = document.createElement("canvas");
+            this.render_to_canvas(xpm_info, canvas);
+
+            var img = document.createElement("img");
+            var data = canvas.toDataURL();
+            
+            img.src = data;
+
+            return img;
+        },
+
+        parse_xpm: function(what) {
             var xpm_info = {};
             // grab the { ... }
             var body = what.substring(what.indexOf('{')+1,
@@ -67,28 +106,9 @@ var libxpm = (function() {
             xpm_info.pixels = lines.slice(i);
 
             return xpm_info;
-        };
+        },
 
-    var parse_color_string =
-        function(what) {
-            parts = what.split('\t');
-            
-            if (parts.length > 1) {
-                color_split = parts[parts.length-1].split(/\s+/);
-                
-                char = color_split[0];
-                color = x11_colors.get_color_value(color_split[color_split.length-1].toLowerCase());
-            } else {
-                parts = parts[0].split(/\s+/);
-                char = parts[0];
-                color = x11_colors.get_color_value(parts[parts.length-1].toLowerCase());
-            }
-
-            return color;
-        };
-
-    var render_to_canvas =
-        function(xpm_info, c, options) {
+        render_to_canvas: function(xpm_info, c, options) {
             if (options)
                 render_options = options;
 
@@ -106,30 +126,7 @@ var libxpm = (function() {
                     color_pixel(ctx, j, i, xpm_info.color_map[char]);
                 }
             }
-        };
-
-    return {
-        xpm_to_img: function(what, options) {
-            if (options)
-                render_options = options;
-
-            var xpm_info = parse_xpm(what);
-            // console.log(xpm_info);
-
-            var canvas = document.createElement("canvas");
-            render_to_canvas(xpm_info, canvas);
-
-            var img = document.createElement("img");
-            var data = canvas.toDataURL();
-            
-            img.src = data;
-
-            return img;
-        },
-
-        parse_xpm: parse_xpm,
-
-        render_to_canvas: render_to_canvas
+        }
     };
 })();
 
