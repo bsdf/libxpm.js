@@ -12,6 +12,10 @@ var _canv = (function() {
     var xhr;
     var click = ext.click =
         function(e) {
+            var scaleInput = parseInt($("scale").value);
+            if (scaleInput)
+                scale = scaleInput;
+
             var rnd = Math.floor(Math.random()*xpm_images.length);
             var url = "xpm/" + xpm_images[rnd];
 
@@ -21,7 +25,12 @@ var _canv = (function() {
                 function(e) {
                     if (xhr.readyState == 4) {
                         var xpmstr = xhr.responseText;
-                        $("wrapper").appendChild(libxpm.xpm_to_img(xpmstr, {scale:10}));
+                        var render_options = {
+                            scale: scale,
+                            bg_checkered: false
+                        };
+
+                        $("wrapper").appendChild(libxpm.xpm_to_img(xpmstr, render_options));
                     }
                 };
 
