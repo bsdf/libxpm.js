@@ -12,7 +12,8 @@ var _canv = (function() {
     var xhr;
     var click = ext.click =
         function(e) {
-            var url = "xpm/owl.xpm";
+            var rnd = Math.floor(Math.random()*xpm_images.length);
+            var url = "xpm/" + xpm_images[rnd];
 
             xhr = new XMLHttpRequest();
             xhr.open("GET", url, true);
@@ -20,7 +21,7 @@ var _canv = (function() {
                 function(e) {
                     if (xhr.readyState == 4) {
                         var xpmstr = xhr.responseText;
-                        $("wrapper").appendChild(libxpm.xpm_to_img(xpmstr, {scale:10}));
+                        $("wrapper").appendChild(libxpm.xpm_to_img(xpmstr, {scale:1}));
                     }
                 };
 
@@ -44,3 +45,77 @@ var require =
     };
 
 var $ = function(what) { return document.getElementById(what); };
+
+var xpm_images = ["N.xpm",
+                  "arrows.xpm",
+                  "atom.xpm",
+                  "bomb.xpm",
+                  "book_index.xpm",
+                  "book_library.xpm",
+                  "color_chart.xpm",
+                  "colours.xpm",
+                  "disk_3D.xpm",
+                  "disk_run.xpm",
+                  "dont_panic.xpm",
+                  "editres.xpm",
+                  "fonts.xpm",
+                  "fruit.xpm",
+                  "fv.xpm",
+                  "globe.xpm",
+                  "index.xpm",
+                  "info.xpm",
+                  "magnify.xpm",
+                  "mail.xpm",
+                  "map.xpm",
+                  "mini.destroy.xpm",
+                  "mini.excl.xpm",
+                  "mini.exit.xpm",
+                  "mini.fvwm.xpm",
+                  "mini.lower.xpm",
+                  "mini.move.xpm",
+                  "mini.netscape.xpm",
+                  "mini.raise.xpm",
+                  "mini.resize.xpm",
+                  "mini.xboing.xpm",
+                  "mini.xlock.xpm",
+                  "mini.xpm",
+                  "network.xpm",
+                  "new.xpm",
+                  "news2.xpm",
+                  "owl.xpm",
+                  "palette2.xpm",
+                  "rcalc.xpm",
+                  "rterm.xpm",
+                  "smallx.xpm",
+                  "snail.xpm",
+                  "snoopy.xpm",
+                  "sysedi.xpm",
+                  "tas.xpm",
+                  "term.xpm",
+                  "uk.xpm",
+                  "window.xpm",
+                  "x.xpm",
+                  "x_server.xpm",
+                  "xblast.xpm",
+                  "xedit.xpm",
+                  "xedit_w.xpm",
+                  "xemacs-icon.xpm",
+                  "xemacs.xpm",
+                  "xgl.xpm",
+                  "xgrab.xpm",
+                  "xhelp.backward.xpm",
+                  "xhelp.exclaim.xpm",
+                  "xhelp.forward.xpm",
+                  "xhelp.index.xpm",
+                  "xhelp.search.xpm",
+                  "xlab.xpm",
+                  "xmail.xpm",
+                  "xman.xpm",
+                  "xmosaic.xpm",
+                  "xmosaic_w.xpm",
+                  "xnomail.xpm",
+                  "xoldmail.xpm",
+                  "xscrabble.xpm",
+                  "xterm.xpm",
+                  "xterm2.xpm",
+                  "yinyang.xpm"]

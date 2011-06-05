@@ -1,7 +1,5 @@
 var libxpm = (function() {
     var comment_regex = /\s*\/\\*.*\\*\/\s*/g;
-    //var comment_regex = /^\/\\*.+\\*\/$/;
-    //var comment_regex = /\*(.|[\r\n])*?\*/;
     
     var render_options = {
         scale: 5
@@ -13,15 +11,18 @@ var libxpm = (function() {
             xx = x*render_options.scale;
             yy = y*render_options.scale;
 
-            if (color == "none") {
-                var step = render_options.scale/2;
-                c.fillStyle = "#333";
-                c.fillRect(xx, yy, step, step);                
-                c.fillRect(xx+step, yy+step, step, step);
-                
+            if (color) {
+                if (color.match(/none/i)) {
+                    var step = render_options.scale/2;
+                    c.fillStyle = "#333";
+                    c.fillRect(xx, yy, step, step);                
+                    c.fillRect(xx+step, yy+step, step, step);
+                } else {
+                    c.fillStyle = color;
+                    c.fillRect(xx, yy, render_options.scale, render_options.scale);
+                }
             } else {
-                c.fillStyle = color;
-                c.fillRect(xx, yy, render_options.scale, render_options.scale);
+                // console.log("errrr.. color not defined");
             }
         };
 
@@ -44,7 +45,7 @@ var libxpm = (function() {
                     line = line.substring(line.indexOf('"')+1, line.lastIndexOf('"'));
                     lines.push(line);
                 } else {
-                    console.log(line);
+                    // console.log(line);
                 }
             }
 
@@ -99,13 +100,15 @@ var libxpm = (function() {
                 render_options = options;
 
             var xpm_info = parse_xpm(what);
-            console.log(xpm_info);
+            // console.log(xpm_info);
 
             var canvas = document.createElement("canvas");
             render_to_canvas(xpm_info, canvas);
 
             var img = document.createElement("img");
-            img.src = canvas.toDataURL();
+            var data = canvas.toDataURL();
+            
+            img.src = data;
 
             return img;
         },
