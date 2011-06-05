@@ -1,5 +1,8 @@
 var libxpm = (function() {
-    var comment_regex = /\s*\/\*.*\*\/\s*/g;
+    var comment_regex = /\s*\/\\*.*\\*\/\s*/g;
+    //var comment_regex = /^\/\\*.+\\*\/$/;
+    //var comment_regex = /\*(.|[\r\n])*?\*/;
+    
     var render_options = {
         scale: 5
     };
@@ -10,7 +13,7 @@ var libxpm = (function() {
             xx = x*render_options.scale;
             yy = y*render_options.scale;
 
-            if (color == "None") {
+            if (color == "none") {
                 var step = render_options.scale/2;
                 c.fillStyle = "#333";
                 c.fillRect(xx, yy, step, step);                
@@ -22,8 +25,8 @@ var libxpm = (function() {
             }
         };
 
-    return {
-        parse_xpm: function(what) {
+    var parse_xpm =
+        function(what) {
             var xpm_info = {};
             // grab the { ... }
             var body = what.substring(what.indexOf('{')+1,
@@ -36,10 +39,12 @@ var libxpm = (function() {
                 // remove comments
                 line = line.replace(comment_regex, "");
 
-                if (line.trim() != "") {
+                if ((line = line.trim()) != "") {
                     // remove quotes "..."
                     line = line.substring(line.indexOf('"')+1, line.lastIndexOf('"'));
                     lines.push(line);
+                } else {
+                    console.log(line);
                 }
             }
 
@@ -65,9 +70,10 @@ var libxpm = (function() {
             xpm_info.pixels = lines.slice(i);
 
             return xpm_info;
-        },
+        };
 
-        render_to_canvas: function(xpm_info, c, options) {
+    var render_to_canvas =
+        function(xpm_info, c, options) {
             if (options)
                 render_options = options;
 
@@ -85,7 +91,28 @@ var libxpm = (function() {
                     color_pixel(ctx, j, i, xpm_info.color_map[char]);
                 }
             }
-        }
+        };
+
+    return {
+        xpm_to_img: function(what, options) {
+            if (options)
+                render_options = options;
+
+            var xpm_info = parse_xpm(what);
+            console.log(xpm_info);
+
+            var canvas = document.createElement("canvas");
+            render_to_canvas(xpm_info, canvas);
+
+            var img = document.createElement("img");
+            img.src = canvas.toDataURL();
+
+            return img;
+        },
+
+        parse_xpm: parse_xpm,
+
+        render_to_canvas: render_to_canvas
     };
 })();
 
