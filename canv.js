@@ -21,7 +21,7 @@ var _canv = (function() {
                 function(e) {
                     if (xhr.readyState == 4) {
                         var xpmstr = xhr.responseText;
-                        $("wrapper").appendChild(libxpm.xpm_to_img(xpmstr, {scale:1}));
+                        $("wrapper").appendChild(libxpm.xpm_to_img(xpmstr, {scale:10}));
                     }
                 };
 
@@ -80,7 +80,6 @@ var xpm_images = ["N.xpm",
                   "mini.xlock.xpm",
                   "mini.xpm",
                   "network.xpm",
-                  "new.xpm",
                   "news2.xpm",
                   "owl.xpm",
                   "palette2.xpm",
@@ -118,4 +117,4 @@ var xpm_images = ["N.xpm",
                   "xscrabble.xpm",
                   "xterm.xpm",
                   "xterm2.xpm",
-                  "yinyang.xpm"]
+                  "yinyang.xpm"];
