@@ -13,7 +13,7 @@ USEAGE:
                 bg_checkered: true // make the transparent bg checkered
             };
 
-            document.body.appendChild(libxpm.xpm_to_img(xpm_str, render_options));
+            document.body.appendChild(libxpm.xpm_to_img(xhr.responseText, render_options));
         }
     };
 
