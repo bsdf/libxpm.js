@@ -1,0 +1,8 @@
+{
+    "name": "libxpm",
+    "version": "0.0.1",
+    "author": "bsdf",
+    "description": "render xpm images to teh web",
+    "homepage": "http://github.com/bsdf/libxpm.js",
+    "main": "libxpm"
+}

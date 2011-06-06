@@ -157,3 +157,11 @@ var x11_colors = (function() {
         }
     }
 })();
+
+if (exports) {
+   exports.render_to_canvas = libxpm.render_to_canvas;
+   exports.parse_xpm = libxpm.parse_xpm;
+   exports.xpm_to_img = libxpm.xpm_to_img;
+
+   exports.get_color_value = x11_colors.get_color_value;
+}
